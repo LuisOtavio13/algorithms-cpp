@@ -1,0 +1,38 @@
+name: Continuous Integration Developer Windows
+
+on: push
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Visual Studio environment
+        uses: microsoft/setup-msbuild@v2
+
+      - name: create build directory
+        run: mkdir out
+        shell: powershell
+
+      - name: Configure CMake
+        working-directory: ./out
+        run: |
+          cmake .. `
+            -G "Visual Studio 17 2022" `
+            -A x64 `
+            -DCMAKE_CXX_FLAGS="/W4 /EHsc"
+        shell: powershell
+
+      - name: Build Project
+        run: cmake --build . --config Debug
+        working-directory: ./out
+        shell: powershell
+      
+      - name: Run tests
+        run: ctest -C Debug
+        working-directory: ./out
+        shell: powershell
+
+ 
