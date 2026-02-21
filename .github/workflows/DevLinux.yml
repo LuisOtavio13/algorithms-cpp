@@ -1,0 +1,33 @@
+name: Continuous Integration Developer Linux
+
+on: push
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                submodules: true
+
+            - name: Install build tools
+              run: sudo apt-get update && sudo apt-get install -y build-essential
+
+            - name: create foolder
+              run: mkdir out && cd out
+
+            - name: compile Cmake
+              run: cmake ..
+              working-directory: ./out
+
+            - name: Build
+              run: cmake --build . --config Debug
+              working-directory: ./out
+
+            - name: Test
+              run: ctest -C Debug
+              working-directory: ./out
+   
+
