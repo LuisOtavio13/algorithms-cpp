@@ -6,26 +6,24 @@ set(PROJECT_NAME algorithms-cpp)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# -----------------------------
-# Biblioteca principal (sem testes)
-# -----------------------------
+
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
+file(GLOB_RECURSE HEDERFILES src/*.hpp)
 
-# Remover arquivos de teste da lista de fontes
 list(FILTER SRC_FILES EXCLUDE REGEX "src/test/.*\\.cpp$")
+list(FILTER HEDERFILES EXCLUDE REGEX "src/test/.*\\.hpp$")
 
-add_library(${PROJECT_NAME}_lib ${SRC_FILES})
-target_include_directories(${PROJECT_NAME}_lib PUBLIC src)
+add_library(${PROJECT_NAME}_lib ${SRC_FILES} ${HEDERFILES})
+target_include_directories(algorithms-cpp_lib
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
 
-# -----------------------------
-# GoogleTest
-# -----------------------------
+
 add_subdirectory(lib/googletest)
 enable_testing()
 
-# -----------------------------
-# Executável de teste
-# -----------------------------
+
 set(TEST_FILES src/test/Main.cpp)
 
 add_executable(${PROJECT_NAME}_tests ${TEST_FILES})
