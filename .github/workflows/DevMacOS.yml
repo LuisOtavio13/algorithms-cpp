@@ -9,6 +9,8 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: create foolder
         run: mkdir out 
